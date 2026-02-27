@@ -76,6 +76,7 @@ export default {
           violet: "oklch(0.72 0.18 280)",
           teal: "oklch(0.72 0.18 140)",
           red: "oklch(0.63 0.22 22)",
+          green: "oklch(0.72 0.18 142)",
         },
         void: {
           DEFAULT: "oklch(0.08 0.015 260)",

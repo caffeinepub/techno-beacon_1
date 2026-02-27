@@ -7,6 +7,7 @@ import { EventsFeedPage } from "./pages/EventsFeedPage";
 import { RadarPage } from "./pages/RadarPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { TripPlannerModal } from "./components/TripPlannerModal";
+import { useRadar } from "./hooks/useRadar";
 import { Heart } from "lucide-react";
 import type { StaticEvent } from "./data/events";
 
@@ -44,6 +45,8 @@ export default function App() {
   const [selectedLegendIds, setSelectedLegendIds] = useState<string[]>(readSelectedLegends);
   const [planTripEvent, setPlanTripEvent] = useState<StaticEvent | null>(null);
   const [homeCity, setHomeCity] = useState<string>(readHomeCity);
+
+  const { radarEvents, addToRadar, removeFromRadar, isOnRadar } = useRadar();
 
   // Sync homeCity from localStorage whenever profile page writes it
   useEffect(() => {
@@ -90,16 +93,17 @@ export default function App() {
           <EventsFeedPage
             selectedLegendIds={selectedLegendIds}
             onPlanTrip={(event) => setPlanTripEvent(event)}
+            onAddToRadar={addToRadar}
+            isOnRadar={isOnRadar}
             homeCity={homeCity}
           />
         )}
         {currentPage === "radar" && (
           <RadarPage
-            onNavigateToArtist={() => {
-              // Navigate to home for now (discover is removed from nav)
-              setCurrentPage("home");
-            }}
-            onNavigateToDiscover={() => setCurrentPage("events")}
+            radarEvents={radarEvents}
+            removeFromRadar={removeFromRadar}
+            onPlanTrip={(event) => setPlanTripEvent(event)}
+            onNavigateToEvents={() => setCurrentPage("events")}
           />
         )}
         {currentPage === "profile" && (

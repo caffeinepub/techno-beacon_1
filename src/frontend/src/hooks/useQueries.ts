@@ -160,7 +160,6 @@ export function useSeedData() {
     { id: "a4", name: "Richie Hawtin", genre: "Minimal Techno", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Richie_Hawtin_2010.jpg/440px-Richie_Hawtin_2010.jpg", bio: "Pioneer of minimal techno and electronic music innovator." },
     { id: "a5", name: "Nina Kraviz", genre: "Techno/House", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Nina_Kraviz_-_Melt_Festival_2013_-_3.jpg/440px-Nina_Kraviz_-_Melt_Festival_2013_-_3.jpg", bio: "Russian DJ, producer and vocalist, founder of трип label." },
     { id: "a6", name: "Ben Klock", genre: "Techno", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Ben_Klock_2013.jpg/440px-Ben_Klock_2013.jpg", bio: "Berlin-based DJ and Berghain resident known for his deep, hypnotic techno." },
-    { id: "a7", name: "Adam Beyer", genre: "Techno", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Adam_Beyer_2015.jpg/440px-Adam_Beyer_2015.jpg", bio: "Swedish techno DJ and founder of Drumcode Records." },
     { id: "a8", name: "Jeff Mills", genre: "Techno", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Jeff_Mills_2014.jpg/440px-Jeff_Mills_2014.jpg", bio: "Detroit techno pioneer and Axis Records founder." },
   ];
 
@@ -171,7 +170,6 @@ export function useSeedData() {
     { id: "e4", title: "ENTER. Ibiza 2026", artistId: "a4", venue: "Space", city: "Ibiza", date: "2026-07-04", ticketUrl: "https://www.residentadvisor.net/events/", source: "Resident Advisor" },
     { id: "e5", title: "трип Night", artistId: "a5", venue: "Berghain", city: "Berlin", date: "2026-04-11", ticketUrl: "https://www.bandsintown.com/", source: "Bandsintown" },
     { id: "e6", title: "Klockworks @ Fabric", artistId: "a6", venue: "Fabric", city: "London", date: "2026-04-25", ticketUrl: "https://www.residentadvisor.net/events/", source: "Resident Advisor" },
-    { id: "e7", title: "Drumcode Festival", artistId: "a7", venue: "ADE", city: "Amsterdam", date: "2026-10-16", ticketUrl: "https://www.festicket.com/", source: "Festicket" },
     { id: "e8", title: "Movement Detroit 2026", artistId: "a8", venue: "Hart Plaza", city: "Detroit", date: "2026-05-23", ticketUrl: "https://www.residentadvisor.net/events/", source: "Resident Advisor" },
     { id: "e9", title: "Charlotte de Witte @ Rex Club", artistId: "a1", venue: "Rex Club", city: "Paris", date: "2026-03-21", ticketUrl: "https://www.residentadvisor.net/events/", source: "Resident Advisor" },
     { id: "e10", title: "Berghain Resident Night", artistId: "a6", venue: "Berghain", city: "Berlin", date: "2026-05-09", ticketUrl: "https://www.bandsintown.com/", source: "Bandsintown" },

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Plane, Ticket, Radio, ExternalLink, Users2 } from "lucide-react";
+import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { LEGENDS, LEGEND_MAP } from "../data/legends";
 import { getEventsForLegends, detectOverlaps } from "../data/events";
@@ -10,6 +11,8 @@ type SortMode = "date" | "legend";
 interface EventsFeedPageProps {
   selectedLegendIds: string[];
   onPlanTrip: (event: StaticEvent) => void;
+  onAddToRadar: (event: StaticEvent) => void;
+  isOnRadar: (eventId: string) => boolean;
   homeCity: string;
 }
 
@@ -30,6 +33,8 @@ function formatDate(dateStr: string): string {
 export function EventsFeedPage({
   selectedLegendIds,
   onPlanTrip,
+  onAddToRadar,
+  isOnRadar,
   homeCity,
 }: EventsFeedPageProps) {
   const [sortMode, setSortMode] = useState<SortMode>("date");
@@ -151,6 +156,11 @@ export function EventsFeedPage({
               event={event}
               overlapLegendIds={overlaps.get(event.id)}
               onPlanTrip={onPlanTrip}
+              onAddToRadar={(e) => {
+                onAddToRadar(e);
+                toast.success(`Added to Radar: ${e.venue}, ${e.city}`);
+              }}
+              isOnRadar={isOnRadar(event.id)}
               animationDelay={0.1 + i * 0.02}
             />
           ))}
@@ -172,10 +182,19 @@ interface EventCardProps {
   event: StaticEvent;
   overlapLegendIds?: string[];
   onPlanTrip: (event: StaticEvent) => void;
+  onAddToRadar: (event: StaticEvent) => void;
+  isOnRadar: boolean;
   animationDelay: number;
 }
 
-function EventCard({ event, overlapLegendIds, onPlanTrip, animationDelay }: EventCardProps) {
+function EventCard({
+  event,
+  overlapLegendIds,
+  onPlanTrip,
+  onAddToRadar,
+  isOnRadar,
+  animationDelay,
+}: EventCardProps) {
   const legend = LEGEND_MAP[event.legendId];
   if (!legend) return null;
 
@@ -271,15 +290,32 @@ function EventCard({ event, overlapLegendIds, onPlanTrip, animationDelay }: Even
           </div>
 
           {/* Action buttons */}
-          <div className="flex items-center gap-1.5 shrink-0">
+          <div className="flex items-center gap-1 shrink-0 flex-wrap justify-end">
+            {/* Add to Radar */}
+            <button
+              type="button"
+              onClick={() => onAddToRadar(event)}
+              className={`flex items-center gap-1 px-2 py-1 font-mono text-[10px] tracking-wider uppercase border transition-all duration-150 rounded-none ${
+                isOnRadar
+                  ? "border-neon-red/60 text-neon-red bg-neon-red/10"
+                  : "border-void-400 text-muted-foreground hover:border-neon-red/50 hover:text-neon-red"
+              }`}
+            >
+              <Radio size={9} />
+              {isOnRadar ? "ON RADAR" : "RADAR"}
+            </button>
+
+            {/* Plan Trip */}
             <button
               type="button"
               onClick={() => onPlanTrip(event)}
               className="flex items-center gap-1 px-2 py-1 font-mono text-[10px] tracking-wider uppercase border border-void-400 text-muted-foreground hover:border-neon-cyan/50 hover:text-neon-cyan transition-all duration-150 rounded-none"
             >
               <Plane size={9} />
-              PLAN TRIP
+              TRIP
             </button>
+
+            {/* RA Tickets */}
             <a
               href={event.ticketUrl}
               target="_blank"
@@ -287,7 +323,19 @@ function EventCard({ event, overlapLegendIds, onPlanTrip, animationDelay }: Even
               className="flex items-center gap-1 px-2 py-1 font-mono text-[10px] tracking-wider uppercase border border-void-400 text-muted-foreground hover:border-neon-violet/50 hover:text-neon-violet transition-all duration-150 rounded-none"
             >
               <Ticket size={9} />
-              TICKETS
+              RA
+              <ExternalLink size={8} />
+            </a>
+
+            {/* Songkick Tickets */}
+            <a
+              href={event.songkickUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 px-2 py-1 font-mono text-[10px] tracking-wider uppercase border border-void-400 text-muted-foreground hover:border-neon-green/50 hover:text-neon-green transition-all duration-150 rounded-none"
+            >
+              <Ticket size={9} />
+              SK
               <ExternalLink size={8} />
             </a>
           </div>

@@ -182,36 +182,55 @@ export function TripPlannerModal({ event, onClose, defaultHomeCity = "London, UK
                 <Plane size={10} className="text-neon-cyan" />
                 FLIGHTS
               </h3>
-              <div className="flex flex-col gap-1.5">
+              <div className="flex flex-col gap-2">
                 {[
                   { label: `Fly out (${dayBefore})`, date: dayBefore },
                   { label: `Event day (${event.date})`, date: event.date },
                   { label: `Return (${dayAfter})`, date: dayAfter },
-                ].map(({ label, date }) => (
-                  <a
-                    key={date}
-                    href={`https://www.google.com/travel/flights?q=flights+from+${encodeURIComponent(homeCity)}+to+${encodeURIComponent(event.city)}+on+${date}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-between gap-2 px-3 py-2 border border-void-400 bg-void-200 hover:border-neon-cyan/40 hover:bg-neon-cyan/5 transition-all duration-150 group"
-                  >
-                    <span className="font-mono text-xs text-muted-foreground group-hover:text-neon-cyan transition-colors duration-150">
-                      {label}
-                    </span>
-                    <span className="font-mono text-[10px] text-muted-foreground/50 group-hover:text-neon-cyan/60 transition-colors duration-150">
-                      Google Flights ↗
-                    </span>
-                  </a>
-                ))}
+                ].map(({ label, date }) => {
+                  const gFlightsHref = `https://www.google.com/travel/flights?q=flights+from+${encodeURIComponent(homeCity)}+to+${encodeURIComponent(event.city)}+on+${date}`;
+                  const dateYYMMDD = date.slice(2).replace(/-/g, "");
+                  const fromEnc = encodeURIComponent(homeCity.toLowerCase().replace(/,\s*/g, "-").replace(/\s+/g, "-"));
+                  const toEnc = encodeURIComponent(event.city.toLowerCase().replace(/\s+/g, "-"));
+                  const skyscannerHref = `https://www.skyscanner.net/transport/flights/${fromEnc}/${toEnc}/${dateYYMMDD}/`;
+
+                  return (
+                    <div key={date} className="flex flex-col gap-1">
+                      <p className="font-mono text-[10px] text-muted-foreground/70 tracking-wider uppercase px-1">
+                        {label}
+                      </p>
+                      <div className="flex gap-1.5">
+                        <a
+                          href={gFlightsHref}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 flex items-center justify-between gap-2 px-3 py-2 border border-void-400 bg-void-200 hover:border-neon-cyan/40 hover:bg-neon-cyan/5 transition-all duration-150 group"
+                        >
+                          <span className="font-mono text-xs text-muted-foreground group-hover:text-neon-cyan transition-colors duration-150">
+                            Google Flights
+                          </span>
+                          <span className="font-mono text-[10px] text-muted-foreground/50 group-hover:text-neon-cyan/60 transition-colors duration-150">
+                            ↗
+                          </span>
+                        </a>
+                        <a
+                          href={skyscannerHref}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 flex items-center justify-between gap-2 px-3 py-2 border border-void-400 bg-void-200 hover:border-neon-green/40 hover:bg-neon-green/5 transition-all duration-150 group"
+                        >
+                          <span className="font-mono text-xs text-muted-foreground group-hover:text-neon-green transition-colors duration-150">
+                            Skyscanner
+                          </span>
+                          <span className="font-mono text-[10px] text-muted-foreground/50 group-hover:text-neon-green/60 transition-colors duration-150">
+                            ↗
+                          </span>
+                        </a>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
-              <a
-                href={googleFlightsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hidden"
-              >
-                open
-              </a>
             </section>
 
             {/* Hotels */}

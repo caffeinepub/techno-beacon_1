@@ -21,12 +21,10 @@ export function LegendsSelectorPage({
 
   function handleSelectDetroit() {
     if (allDetroitSelected) {
-      // Deselect all Detroit founders
       detroitFounders.forEach((l) => {
         if (selectedLegendIds.includes(l.id)) onToggleLegend(l.id);
       });
     } else {
-      // Select all Detroit founders that aren't already selected
       detroitFounders.forEach((l) => {
         if (!selectedLegendIds.includes(l.id)) onToggleLegend(l.id);
       });
@@ -89,7 +87,7 @@ export function LegendsSelectorPage({
 
       {/* Legend Cards Grid */}
       <div
-        className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 mb-8 fade-in"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-8 fade-in"
         style={{ animationDelay: "0.1s" }}
       >
         {LEGENDS.map((legend, i) => (
@@ -149,79 +147,89 @@ interface LegendCardProps {
 }
 
 function LegendCard({ legend, isSelected, onToggle, animationDelay }: LegendCardProps) {
+  const initial = legend.name.charAt(0).toUpperCase();
+
+  // Determine if the legend colour is light or dark to set initial text colour
+  const needsDarkText = ["#22C55E", "#EAB308", "#F97316", "#06B6D4", "#60A5FA"].includes(
+    legend.color,
+  );
+
   return (
     <button
       type="button"
       onClick={onToggle}
-      className="relative flex flex-col overflow-hidden cursor-pointer transition-all duration-200 rounded-none text-left group fade-in"
+      className="relative flex flex-row gap-3 overflow-hidden cursor-pointer transition-all duration-200 rounded-none text-left group fade-in p-3 bg-void-100"
       style={{
         animationDelay: `${animationDelay}s`,
         border: isSelected ? `2px solid ${legend.color}` : "2px solid oklch(0.22 0.03 260)",
         boxShadow: isSelected
-          ? `0 0 16px ${legend.color}40, 0 4px 24px oklch(0 0 0 / 0.5)`
-          : "0 2px 8px oklch(0 0 0 / 0.4)",
+          ? `0 0 20px ${legend.color}30, 0 4px 24px oklch(0 0 0 / 0.5)`
+          : "0 2px 8px oklch(0 0 0 / 0.3)",
       }}
       aria-pressed={isSelected}
       aria-label={`${isSelected ? "Deselect" : "Select"} ${legend.name}`}
     >
-      {/* Portrait image */}
-      <div className="relative aspect-[4/5] overflow-hidden bg-void-200 scan-line">
-        <img
-          src={legend.imageUrl}
-          alt={legend.name}
-          className="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-105"
-          loading="lazy"
-        />
-
-        {/* Bottom gradient overlay */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: `linear-gradient(to top, ${legend.color}28 0%, ${legend.color}10 30%, transparent 60%)`,
-          }}
-        />
-
-        {/* Hover overlay */}
-        <div
-          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-          style={{ background: `${legend.color}12` }}
-        />
-
-        {/* Detroit Founder badge */}
-        {legend.detroitFounder && (
-          <div className="absolute top-2 left-2 px-1.5 py-0.5 bg-neon-red/90 font-mono text-[9px] tracking-widest uppercase text-void font-bold">
-            DETROIT
-          </div>
-        )}
-
-        {/* Selection indicator */}
-        <div
-          className="absolute top-2 right-2 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200"
-          style={{
-            backgroundColor: isSelected ? legend.color : "oklch(0.08 0.015 260 / 0.8)",
-            borderColor: isSelected ? legend.color : "oklch(0.22 0.03 260)",
-          }}
-        >
-          {isSelected && <Check size={12} className="text-void" strokeWidth={3} />}
-        </div>
+      {/* Coloured initial square */}
+      <div
+        className="shrink-0 w-12 h-12 flex items-center justify-center font-bold text-xl"
+        style={{
+          backgroundColor: `${legend.color}22`,
+          border: `1px solid ${legend.color}60`,
+          color: legend.color,
+        }}
+      >
+        {initial}
       </div>
 
       {/* Info section */}
-      <div
-        className="flex flex-col gap-1 p-2.5 bg-void-100"
-        style={{
-          borderTop: isSelected ? `1px solid ${legend.color}40` : "1px solid oklch(0.22 0.03 260)",
-        }}
-      >
-        <p className="font-bold text-sm text-foreground leading-tight truncate">{legend.name}</p>
-        <p className="font-mono text-[10px] text-muted-foreground truncate leading-tight">
-          {legend.alias}
+      <div className="flex-1 flex flex-col gap-1 min-w-0">
+        {/* Name + alias row */}
+        <div className="flex items-start justify-between gap-1">
+          <div className="min-w-0">
+            <p className="font-bold text-sm text-foreground leading-tight truncate">
+              {legend.name}
+            </p>
+            <p className="font-mono text-[10px] text-muted-foreground truncate leading-tight">
+              {legend.alias}
+            </p>
+          </div>
+          {/* Selection indicator */}
+          <div
+            className="shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-200 mt-0.5"
+            style={{
+              backgroundColor: isSelected ? legend.color : "oklch(0.08 0.015 260 / 0.8)",
+              borderColor: isSelected ? legend.color : "oklch(0.22 0.03 260)",
+            }}
+          >
+            {isSelected && <Check size={10} className="text-void" strokeWidth={3} />}
+          </div>
+        </div>
+
+        {/* Bio */}
+        <p className="text-[11px] text-muted-foreground leading-snug line-clamp-2">
+          {legend.bio}
         </p>
-        <div className="flex items-center gap-1 mt-0.5">
-          <Music size={9} style={{ color: legend.color }} className="shrink-0" />
-          <p className="font-mono text-[10px] truncate" style={{ color: legend.color }}>
-            {legend.keyTrack}
-          </p>
+
+        {/* Key track + Detroit badge row */}
+        <div className="flex items-center justify-between gap-2 mt-0.5">
+          <div className="flex items-center gap-1 min-w-0">
+            <Music size={9} style={{ color: legend.color }} className="shrink-0" />
+            <p className="font-mono text-[10px] truncate" style={{ color: legend.color }}>
+              {legend.keyTrack}
+            </p>
+          </div>
+          {legend.detroitFounder && (
+            <span
+              className="shrink-0 px-1.5 py-0.5 font-mono text-[8px] tracking-widest uppercase font-bold"
+              style={{
+                backgroundColor: "#EF444422",
+                color: "#EF4444",
+                border: "1px solid #EF444440",
+              }}
+            >
+              DETROIT
+            </span>
+          )}
         </div>
       </div>
     </button>
