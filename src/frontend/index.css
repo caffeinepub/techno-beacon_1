@@ -1,0 +1,185 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0.25rem;
+
+    /* Core palette — Techno Beacon dark theme */
+    --background: 0.08 0.015 260;
+    --foreground: 0.94 0.02 220;
+    --card: 0.11 0.018 260;
+    --card-foreground: 0.94 0.02 220;
+    --popover: 0.13 0.02 260;
+    --popover-foreground: 0.94 0.02 220;
+
+    /* Electric cyan primary */
+    --primary: 0.78 0.16 200;
+    --primary-foreground: 0.07 0.01 260;
+
+    /* Subtle secondary */
+    --secondary: 0.16 0.025 260;
+    --secondary-foreground: 0.85 0.04 220;
+
+    /* Muted surfaces */
+    --muted: 0.14 0.02 260;
+    --muted-foreground: 0.52 0.05 230;
+
+    /* Cyan accent */
+    --accent: 0.72 0.18 198;
+    --accent-foreground: 0.07 0.01 260;
+
+    /* Destructive */
+    --destructive: 0.63 0.22 22;
+    --destructive-foreground: 0.97 0.02 220;
+
+    /* Borders */
+    --border: 0.22 0.03 260;
+    --input: 0.18 0.025 260;
+    --ring: 0.78 0.16 200;
+
+    /* Source badge colors */
+    --source-ra: 0.72 0.20 200;      /* Resident Advisor — cyan */
+    --source-bandsintown: 0.72 0.18 280;  /* Bandsintown — violet */
+    --source-festicket: 0.72 0.18 140;   /* Festicket — teal-green */
+
+    /* Chart colors */
+    --chart-1: 0.78 0.16 200;
+    --chart-2: 0.65 0.18 280;
+    --chart-3: 0.72 0.18 140;
+    --chart-4: 0.63 0.22 22;
+    --chart-5: 0.60 0.20 310;
+
+    /* Sidebar */
+    --sidebar: 0.09 0.015 260;
+    --sidebar-foreground: 0.94 0.02 220;
+    --sidebar-primary: 0.78 0.16 200;
+    --sidebar-primary-foreground: 0.07 0.01 260;
+    --sidebar-accent: 0.14 0.02 260;
+    --sidebar-accent-foreground: 0.85 0.04 220;
+    --sidebar-border: 0.22 0.03 260;
+    --sidebar-ring: 0.78 0.16 200;
+
+    /* Glow effects */
+    --glow-cyan: 0 0 20px oklch(0.78 0.16 200 / 0.4), 0 0 40px oklch(0.78 0.16 200 / 0.15);
+    --glow-cyan-sm: 0 0 10px oklch(0.78 0.16 200 / 0.3);
+    --glow-red: 0 0 20px oklch(0.63 0.22 22 / 0.4);
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Space Grotesk', sans-serif;
+    background-image:
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        oklch(0.78 0.16 200 / 0.015) 2px,
+        oklch(0.78 0.16 200 / 0.015) 3px
+      );
+    background-attachment: fixed;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  code, .mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+@layer utilities {
+  .glow-cyan {
+    box-shadow: var(--glow-cyan);
+  }
+
+  .glow-cyan-sm {
+    box-shadow: var(--glow-cyan-sm);
+  }
+
+  .glow-red {
+    box-shadow: var(--glow-red);
+  }
+
+  .text-glow-cyan {
+    text-shadow: 0 0 20px oklch(0.78 0.16 200 / 0.6), 0 0 40px oklch(0.78 0.16 200 / 0.3);
+  }
+
+  .card-hover {
+    transition: all 0.2s ease;
+  }
+
+  .card-hover:hover {
+    border-color: oklch(0.78 0.16 200 / 0.6);
+    box-shadow: 0 0 20px oklch(0.78 0.16 200 / 0.15), 0 4px 24px oklch(0 0 0 / 0.4);
+    transform: translateY(-2px);
+  }
+
+  .nav-link {
+    @apply mono text-xs tracking-widest uppercase transition-all duration-200;
+    color: oklch(0.52 0.05 230);
+  }
+
+  .nav-link:hover, .nav-link.active {
+    color: oklch(0.78 0.16 200);
+    text-shadow: 0 0 12px oklch(0.78 0.16 200 / 0.5);
+  }
+
+  .beacon-pulse {
+    animation: beacon-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes beacon-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.05); }
+  }
+
+  .scan-line {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scan-line::after {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(transparent, oklch(0.78 0.16 200 / 0.06), transparent);
+    animation: scan 4s linear infinite;
+  }
+
+  @keyframes scan {
+    0% { top: -100%; }
+    100% { top: 200%; }
+  }
+
+  .fade-in {
+    animation: fadeIn 0.4s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .stagger-1 { animation-delay: 0.05s; }
+  .stagger-2 { animation-delay: 0.1s; }
+  .stagger-3 { animation-delay: 0.15s; }
+  .stagger-4 { animation-delay: 0.2s; }
+  .stagger-5 { animation-delay: 0.25s; }
+  .stagger-6 { animation-delay: 0.3s; }
+  .stagger-7 { animation-delay: 0.35s; }
+  .stagger-8 { animation-delay: 0.4s; }
+}
